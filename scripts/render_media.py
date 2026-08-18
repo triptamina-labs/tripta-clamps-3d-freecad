@@ -16,7 +16,6 @@ Uso:
 
 Genera en `docs/media/`:
   - hero.png            (las 4 piezas juntas, para el banner del README)
-  - render_all_wide.png (las 4 piezas separadas, ancho)
   - render_ferrula.png  render_gasket.png  render_spool.png  render_endcap.png
 """
 import subprocess, sys, os

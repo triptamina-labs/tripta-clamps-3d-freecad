@@ -5,3 +5,4 @@ __pycache__/
 *.FCStd
 render_*.log
 *.log
+.hermes/
