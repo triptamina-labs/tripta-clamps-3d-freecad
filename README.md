@@ -6,7 +6,7 @@
 
 Workbench de FreeCAD para modelar **piezas tri-clamp** — ferulas, gaskets, spools y end caps — con dimensiones según **ASME BPE**. Elegís el tamaño, ajustás los parámetros y FreeCAD te genera el sólido, listo para recomputar y exportar.
 
-Es la misma geometría que ya hicimos como [visitor 3D en la web](https://github.com/triptamina-labs/TriptaClamps3D-Web): en el navegador la ves girar y la descargás; acá queda adentro de FreeCAD como un workbench, para modelarla con el resto de tu pieza sin salir de la herramienta.
+Es un proyecto análogo a [Triptaclamps3D-Web](https://github.com/triptamina-labs/TriptaClamps3D-Web).
 
 La parte de cálculo (perfiles, dimensiones, presets) es Python puro con tests; la capa de FreeCAD la envuelve como sólidos de revolución paramétricos.
 
