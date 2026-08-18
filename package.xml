@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="https://github.com/FreeCAD/fcad_addon">
+  <name>tripta-fittings</name>
+  <description>Workbench paramétrico de piezas tri-clamp (férula, gasket, spool, endcap) portado de TriptaClamps3D-Web</description>
+  <version>0.1.0</version>
+  <date>2026-08-18</date>
+  <maintainer email="felipe@triptalabs.co">Felipe Castellanos Cárdenas</maintainer>
+  <license file="LICENSE">MIT</license>
+  <icon>tripta_fittings/icon.png</icon>
+  <url>https://github.com/triptalabs/tripta-fittings-freecad</url>
+  <documentation>https://github.com/triptalabs/tripta-fittings-freecad/blob/main/README.md</documentation>
+  <content type="workbench" url="https://github.com/triptalabs/tripta-fittings-freecad/archive/refs/heads/main.zip">tripta-fittings</content>
+  <depends>
+    <freeCAD version="0.21"/>
+  </depends>
+</package>
