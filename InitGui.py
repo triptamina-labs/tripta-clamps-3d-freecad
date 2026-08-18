@@ -31,6 +31,13 @@ def Initialize():
     except Exception as exc:
         print(f"[Tripta Fittings] Error al registrar workbench: {exc}")
 
+    # Registrar comandos en FreeCADGui (TriptaCreatePiece, TriptaOpenPanel)
+    try:
+        from tripta_fittings.commands import register_commands
+        register_commands()
+    except Exception:
+        pass
+
 
 # Requerido por FreeCAD — lista de comandos que provee este workbench
 Commands = ["TriptaCreatePiece", "TriptaOpenPanel"]
