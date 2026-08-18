@@ -1,113 +1,144 @@
-# Tripta Fittings — Workbench para FreeCAD
+<p align="center">
+  <img src="docs/media/hero.png" alt="Tripta Fittings — piezas tri-clamp paramétricas" width="820">
+</p>
 
-**Port del proyecto [TriptaClamps3D-Web](https://github.com/triptalabs/TriptaClamps3D-Web) a FreeCAD.**
+# Tripta Fittings — Workbench paramétrico para FreeCAD
 
-Workbench paramétrico que genera piezas tri-clamp industriales con precisión dimensional certificada según ASME BPE.
+**Port a FreeCAD del proyecto [TriptaClamps3D-Web](https://github.com/triptalabs/TriptaClamps3D-Web).**
+
+Workbench que genera piezas **tri-clamp** industriales 100 % paramétricas con dimensiones certificadas según la norma **ASME BPE**. El núcleo de cálculo es puro Python (probado sin GUI) y la capa de FreeCAD lo envuelve como `Part::FeaturePython` con solidos de revolución.
+
+---
+
+## Piezas incluidas
+
+| Pieza | Render | Descripción |
+|-------|--------|-------------|
+| **Férula** (ferrule) | <img src="docs/media/render_ferrula.png" width="120"> | Collar tri-clamp soldado al tubo; cara plana con bead para el sello. |
+| **Gasket** | <img src="docs/media/render_gasket.png" width="120"> | Junta tórica entre dos férulas; espesor y diámetro del preset. |
+| **Spool** | <img src="docs/media/render_spool.png" width="150"> | Sección de tubo con férula en cada extremo (largo paramétrico). |
+| **End cap** | <img src="docs/media/render_endcap.png" width="100"> | Tapa ciega tri-clamp para sellar el extremo de una línea. |
+
+Los renders se generan con material metálico (modo *Shaded*, sin aristas de construcción). Reproducibles con `scripts/render_media.py`.
 
 ---
 
 ## Características
 
-- **4 piezas paramétricas**: férula (ferrule), gasket, spool y endcap.
-- **Presets ASME BPE**: tablas con dimensiones certificadas para tamaños desde ½" Mini hasta 4".
-- **Exportación nativa de FreeCAD**: STEP y BREP desde el propio workbench.
-- **Cálculo puro**: el núcleo de dimensiones no depende de FreeCAD (testing sin GUI).
-- **Validación de constraints**: previene dimensiones incompatibles con límites y tolerancias.
+- **4 piezas paramétricas** — férula, gasket, spool y endcap, sólidos de revolución válidos.
+- **10 presets ASME BPE** — desde ½″ Mini hasta 4″ TC119, con dimensiones de férula, tubo y gasket certificadas.
+- **Paramétrico en vivo** — cambia una dimensión y el sólido se reconstruye por recompute (`Ctrl+Shift+R`).
+- **Panel de control acoplable** — `TriptaOpenPanel` abre un dock `QDockWidget` nativo (View → Panels).
+- **Comando de creación** — `TriptaCreatePiece` genera la pieza directamente en la escena.
+- **Constraint checking** — valida y acota dimensiones incompatibles con los límites ASME BPE.
+- **Núcleo sin dependencia de FreeCAD** — la suite corre con pytest puro; FreeCAD solo se toca en la capa adaptadora.
+- **Headless friendly** — imports GUI protegidos a nivel de módulo; se testea con `freecadcmd`.
 
 ---
 
 ## Instalación
 
-### Modo 1 — Addon Manager (recomado)
+### Modo 1 — Addon manager
 
-1. Abre FreeCAD → *Edit → Preferences → Addon Manager*.
-2. Busca **tripta-fittings** (o instala desde URL del repositorio).
-3. Reinicia FreeCAD.
+1. Abre FreeCAD → *Tools → Addon Manager* → *Configure → Add to a custom repository* con la URL del repo, o instala desde el repositorio.
+2. Reinicia FreeCAD.
+3. Selecciona el workbench **Tripta Fittings** en el selector de workbenches.
 
-### Modo 2 — Instalación manual
-
-Copia la carpeta del repositorio dentro del directorio de addons de FreeCAD:
+### Modo 2 — Manual (Linux / Flatpak)
 
 ```bash
-# Linux
-cp -r tripta-fittings-freecad ~/.local/share/FreeCAD/Mod/tripta-fittings
-
-# macOS
-cp -r tripta-fittings-freecad ~/Library/Application\ Support/FreeCAD/Mod/tripta-fittings
-
-# Windows
-xcopy /E /I tripta-fittings-freecad "%APPDATA%\FreeCAD\Mod\tripta-fittings"
+MODDIR="$HOME/.var/app/org.freecad.FreeCAD/data/FreeCAD/v1-1/Mod"
+mkdir -p "$MODDIR"
+# symlink para desarrollo en vivo (recomendado)
+ln -s ~/repos/tripta-fittings-freecad "$MODDIR/tripta-fittings"
+# o copia completa para uso estable
+# cp -r ~/repos/tripta-fittings-freecad "$MODDIR/tripta-fittings"
 ```
 
-Reinicia FreeCAD. El workbench aparecerá en el selector de workbenches como **Tripta Fittings**.
+> Ruta del addon real (varía según instalación): confirma con
+> `flatpak run --command=freecadcmd org.freecad.FreeCAD -c "import FreeCAD as A; print(A.ConfigGet('UserAppData'))"`
+
+Reinicia FreeCAD. El workbench aparecerá como **Tripta Fittings**.
 
 ---
 
-## Uso básico
+## Uso
 
-1. Selecciona el workbench **Tripta Fittings** desde el selector de workbenches.
-2. Usa el menú *Tripta Fittings → Create Piece* para abrir el panel de creación (ola 3).
-3. Selecciona una pieza (férula, gasket, spool o endcap).
-4. Elige un preset ASME BPE o ajusta los parámetros manualmente.
-5. Haz clic en **Create** para generar la geometría en FreeCAD.
-6. Modifica parámetros y ejecuta **Recompute** (Ctrl+Shift+R) para actualizar.
-
----
-
-## Estructura del proyecto
-
-```
-tripta-fittings-freecad/
-├── package.xml              # Metadatos del Addon Manager
-├── Init.py                  # Hook de inicialización FreeCAD
-├── InitGui.py               # Hook GUI — registra el workbench
-├── README.md                # Este archivo
-├── LICENSE                  # MIT
-├── tripta_fittings/         # Paquete principal
-│   ├── __init__.py
-│   ├── constraints.py       # Dimensiones y tolerancias
-│   ├── presets.py           # Tablas ASME BPE
-│   ├── profile_cmds.py      # Comandos de creación de perfiles
-│   └── workbench.py         # Clase TriptaFittingsWorkbench
-├── tests/                   # Suite de pruebas
-│   ├── test_constraints.py
-│   ├── test_presets.py
-│   └── test_profile_cmds.py
-└── .venv/                   # Entorno virtual (desarrollo)
-```
+1. Abre FreeCAD y selecciona el workbench **Tripta Fittings**.
+2. Ejecuta *Tripta Fittings → Open Panel* (`TriptaOpenPanel`) para abrir el panel de control.
+3. En el panel: elige **tipo de pieza** (férula / gasket / spool / endcap) y un **preset ASME BPE** (p. ej. `1.5″ · TC64`) o ajusta parámetros manualmente.
+4. Pulsa **Create** (o usa *Tripta Fittings → Create Piece*, `TriptaCreatePiece`) para generar el sólido.
+5. Modifica cualquier dimensión en la vista de propiedades y pulsa **Recompute** para actualizar el modelo.
 
 ---
 
-## Ejecución de tests
+## Manual de referencia — núcleo puro
 
-### Pruebas del núcleo puro (sin FreeCAD)
+El paquete `tripta_fittings` está divido en una capa **pura** (testeable sin FreeCAD) y una **adaptadora**:
+
+```text
+tripta_fittings/
+├── profile_cmds.py     # Puro: MoveTo/LineTo/Arc + perfiles de férula/gasket/spool/endcap
+├── constraints.py      # Puro: validate_and_clamp_dimensions
+├── presets.py          # Puro: 10 presets ASME BPE + lookups por nombre/índice
+├── geometry.py         # Adaptador: ProfileCmd → Line|ArcSegment (conversión de arcos)
+├── builder.py          # Adaptador: wire→face→revolve 360° eje Y → Part.Solid
+├── feature.py          # Adaptador: TriptaFittingsFeature (Part::FeaturePython) + ViewProvider
+├── commands.py         # Adaptador: TriptaCreatePiece, TriptaOpenPanel, register_commands()
+├── panel.py            # Adaptador: panel QDockWidget + preset_to_props_map() (pura)
+└── workbench.py        # Adaptador: TriptaFittingsWorkbench
+```
+
+### Pipeline de generación
+
+```
+perfil (2D, puro)  →  geometry (arcos→segmentos)  →  builder (wire→face→revolve)  →  Part.Solid
+```
+
+`builder.build_solid(tipo, params)` usa `Part.Face(wire).revolve(...)` — no `wire.revolve()`, que produce una `Part.Shell` (superficie) en lugar de un sólido.
+
+---
+
+## Tests
+
+### Suite del núcleo (pytest, sin FreeCAD)
 
 ```bash
-cd tripta-fittings-freecad
-.venv/bin/python -m pytest tests/ -v
+python -m pytest tests/ -v
+# → 88 passed
 ```
 
-### Smoke test con FreeCAD (headless)
+### Smoke test de integración (FreeCAD headless)
 
 ```bash
-flatpak run --env=PYTHONPATH=/home/tripta/repos/tripta-fittings-freecad \
-  --command=freecadcmd org.freecad.FreeCAD -c "
-import tripta_fittings
-print('IMPORT_OK')
-"
+flatpak run --env=PYTHONPATH=$PWD --command=freecadcmd org.freecad.FreeCAD \
+  -c "import tripta_fittings; print('IMPORT_OK')"
+```
+
+Genera los 4 sólidos válidos (volumen > 0, `Shape.isValid`, bbox no degenerado):
+
+```bash
+flatpak run --env=PYTHONPATH=$PWD --command=freecadcmd org.freecad.FreeCAD \
+  -c "exec(open('tests/smoke_feature_cmd.py').read())"
+```
+
+### Regenerar los renders del README
+
+```bash
+./scripts/render_media.py    # necesita FreeCAD (flatpak), Xvfb y PIL
 ```
 
 ---
 
-## Estado actual
+## Estado del proyecto
 
-| Ola | Descripción | Estado |
-|-----|-------------|--------|
-| 1 | Núcleo puro (constraints, presets, constants) | ✅ Completada |
-| 2 | FreeCAD adapters (profile_cmds, workbench stub) | ✅ Completada |
-| 3 | UI — TaskPanel y comandos interactivos | 🔲 Pendiente |
-| 4 | Exportación STEP/BREP nativa | 🔲 Pendiente |
-| 5 | Tests de integración con FreeCAD headless | 🔲 Pendiente |
+| Área | Estado |
+|------|--------|
+| Núcleo puro (perfiles, constraints, presets) | ✅ Completado · 88 tests |
+| Capa FreeCAD (feature paramétrica, builder) | ✅ Completado · smoke 4/4 sólidos |
+| Panel de control + comandos del workbench | ✅ Completado |
+| Rendering para documentación | ✅ Completado (`docs/media/`) |
+| Verificación visual en GUI | ✅ Completado |
 
 ---
 
@@ -115,18 +146,19 @@ print('IMPORT_OK')
 
 - [x] Paquete Python puro con datos ASME BPE
 - [x] Restricciones dimensionales y validación
-- [x] Comandos de perfiles básicos
-- [ ] Workbench con menú y TaskPanel
-- [ ] Panel paramétrico interactivo
-- [ ] Exportación a STEP y BREP
-- [ ] Integración con FreeCAD Assembly
-- [ ] Documentación y ejemplos
+- [x] Comandos de creación de perfiles
+- [x] Feature `Part::FeaturePython` paramétrica
+- [x] Panel de control interactivo
+- [ ] Exportación asistida a STEP/BREP
+- [ ] Integración con Assembly / contenedores
+- [ ] Iconos personalizados del workbench
+- [ ] Más tamaños/estándares (DIN/ISO)
 
 ---
 
 ## Licencia
 
-MIT — Ver [LICENSE](LICENSE).
+MIT — ver [LICENSE](LICENSE).
 
 ---
 

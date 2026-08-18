@@ -66,7 +66,7 @@ class TriptaFittingsViewProvider:
     def __init__(self, vobj):
         vobj.Proxy = self
 
-    def getIcon(self, vobj):
+    def getIcon(self):
         return None
 
     def attach(self, vobj):
