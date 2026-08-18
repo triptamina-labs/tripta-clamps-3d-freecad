@@ -53,8 +53,13 @@ class TriptaFittingsWorkbench:
         except ImportError:
             return
 
-        # Los comandos se registrarán en la ola 3.
-        # Por ahora solo declaramos los nombres del menú.
+        # Registrar comandos en FreeCADGui (TriptaCreatePiece, TriptaOpenPanel)
+        try:
+            from tripta_fittings.commands import register_commands
+            register_commands()
+        except ImportError:
+            pass  # commands module not yet available; commands still listed
+
         self.appendMenu(
             self.MenuText,
             [
