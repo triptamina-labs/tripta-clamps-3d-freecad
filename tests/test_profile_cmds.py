@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from tripta_fittings.profile_cmds import (
+from tripta_clamps_3d.profile_cmds import (
     Arc,
     LineTo,
     MoveTo,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke test para TriptaFittingsFeature — ejecutar con freecadcmd.
+"""Smoke test para TriptaClamps3DFeature — ejecutar con freecadcmd.
 
 Crea las 4 piezas (ferrula, gasket, spool, endcap) como
 Part::FeaturePython, las reconstruye y verifica geometría válida.
@@ -14,7 +14,7 @@ import os
 # Asegurar que el repo está en el path
 # Cuando se ejecuta con exec(open(...).read()), __file__ no existe.
 # Usamos el PYTHONPATH que ya debería contener el repo,
-# o buscamos tripta_fittings/ en el cwd.
+# o buscamos tripta_clamps_3d/ en el cwd.
 _REPO = os.path.dirname(os.path.dirname(os.path.abspath(
     __file__ if '__file__' in dir() else os.path.join(os.getcwd(), 'tests', 'smoke_feature_cmd.py')
 )))
@@ -24,8 +24,8 @@ if _REPO not in sys.path:
 import FreeCAD as App
 import Part
 
-from tripta_fittings.feature import TriptaFittingsFeature, TriptaFittingsViewProvider
-from tripta_fittings.presets import preset_por_nombre
+from tripta_clamps_3d.feature import TriptaClamps3DFeature, TriptaClamps3DViewProvider
+from tripta_clamps_3d.presets import preset_por_nombre
 
 # ── Preset 1.5" TC64 ────────────────────────────────────────
 
@@ -59,11 +59,11 @@ for tipo in TIPOS:
     obj = doc.addObject("Part::FeaturePython", obj_name)
 
     # Asignar proxy
-    proxy = TriptaFittingsFeature(obj)
+    proxy = TriptaClamps3DFeature(obj)
 
     # Asignar view provider (sólo en modo GUI — ViewObject es None en freecadcmd)
     if obj.ViewObject is not None:
-        vp = TriptaFittingsViewProvider(obj.ViewObject)
+        vp = TriptaClamps3DViewProvider(obj.ViewObject)
 
     # Setear propiedades
     obj.PieceType = tipo

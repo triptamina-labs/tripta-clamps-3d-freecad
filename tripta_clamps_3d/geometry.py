@@ -11,7 +11,7 @@ import math
 from dataclasses import dataclass
 from typing import Union
 
-from tripta_fittings.profile_cmds import MoveTo, LineTo, Arc, ProfileCmd
+from tripta_clamps_3d.profile_cmds import MoveTo, LineTo, Arc, ProfileCmd
 
 
 # ── Segmentos geométricos ────────────────────────────────────

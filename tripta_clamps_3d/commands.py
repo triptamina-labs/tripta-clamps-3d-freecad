@@ -1,27 +1,27 @@
-"""FreeCAD commands for the Tripta Fittings workbench.
+"""FreeCAD commands for the Tripta Clamps 3D workbench.
 
 This module defines two commands registered in FreeCADGui:
 
-* ``TriptaCreatePiece`` — Creates a new parametric tri-clamp piece in
+* ``TriptaClamps3DCreatePiece`` — Creates a new parametric tri-clamp piece in
   the active document (or a new document if none is open).  Does **not**
   open the panel.
 
-* ``TriptaOpenPanel`` — Opens (or brings to front) the TriptaFittingsPanel
+* ``TriptaClamps3DOpenPanel`` — Opens (or brings to front) the TriptaClamps3DPanel
   dock widget.
 
 Registration
 ------------
 ``register_commands()`` must be called after FreeCADGui is available
-(e.g. from ``TriptaFittingsWorkbench.Initialize`` or
+(e.g. from ``TriptaClamps3DWorkbench.Initialize`` or
 ``InitGui.Initialize``).  It is wrapped in ``try/except`` so that
 headless environments (``freecadcmd``, pytest) never break.
 
 How to open the panel
 ---------------------
-From the FreeCAD GUI menu: *Tripta Fittings → TriptaOpenPanel*.
+From the FreeCAD GUI menu: *Tripta Clamps 3D → TriptaClamps3DOpenPanel*.
 Or programmatically::
 
-    from tripta_fittings.panel import open_panel
+    from tripta_clamps_3d.panel import open_panel
     open_panel()
 """
 from __future__ import annotations
@@ -29,9 +29,9 @@ from __future__ import annotations
 from typing import Any
 
 
-# ── TriptaCreatePiece command ──────────────────────────────────────
+# ── TriptaClamps3DCreatePiece command ──────────────────────────────────────
 
-class _TriptaCreatePieceCmd:
+class _TriptaClamps3DCreatePieceCmd:
     """FreeCAD command: create a parametric tri-clamp piece."""
 
     def IsActive(self) -> bool:
@@ -39,7 +39,7 @@ class _TriptaCreatePieceCmd:
         return True
 
     def Activated(self) -> None:
-        """Create a new TriptaFittingsFeature in the active document."""
+        """Create a new TriptaClamps3DFeature in the active document."""
         try:
             import FreeCAD as App
             import FreeCADGui as _Gui
@@ -48,16 +48,16 @@ class _TriptaCreatePieceCmd:
 
         doc = App.ActiveDocument
         if doc is None:
-            doc = App.newDocument("TriptaFittings")
+            doc = App.newDocument("TriptaClamps3D")
 
-        from tripta_fittings.feature import (
-            TriptaFittingsFeature,
-            TriptaFittingsViewProvider,
+        from tripta_clamps_3d.feature import (
+            TriptaClamps3DFeature,
+            TriptaClamps3DViewProvider,
         )
 
         obj = doc.addObject("Part::FeaturePython", "TF_Piece")
-        TriptaFittingsFeature(obj)
-        TriptaFittingsViewProvider(obj.ViewObject)
+        TriptaClamps3DFeature(obj)
+        TriptaClamps3DViewProvider(obj.ViewObject)
         doc.recompute()
 
         # Select the new object
@@ -68,7 +68,7 @@ class _TriptaCreatePieceCmd:
             pass
 
     def GetCommands(self) -> tuple:
-        return ("TriptaCreatePiece",)
+        return ("TriptaClamps3DCreatePiece",)
 
     def GetToolTip(self) -> str:
         return "Crear una pieza tri-clamp paramétrica (férula/gasket/spool/endcap)."
@@ -80,26 +80,26 @@ class _TriptaCreatePieceCmd:
         return ""
 
 
-# ── TriptaOpenPanel command ────────────────────────────────────────
+# ── TriptaClamps3DOpenPanel command ────────────────────────────────────────
 
-class _TriptaOpenPanelCmd:
-    """FreeCAD command: open the Tripta Fittings control panel."""
+class _TriptaClamps3DOpenPanelCmd:
+    """FreeCAD command: open the Tripta Clamps 3D control panel."""
 
     def IsActive(self) -> bool:
         return True
 
     def Activated(self) -> None:
         try:
-            from tripta_fittings.panel import open_panel
+            from tripta_clamps_3d.panel import open_panel
             open_panel()
         except Exception as exc:
-            print(f"[Tripta Fittings] Error opening panel: {exc}")
+            print(f"[Tripta Clamps 3D] Error opening panel: {exc}")
 
     def GetCommands(self) -> tuple:
-        return ("TriptaOpenPanel",)
+        return ("TriptaClamps3DOpenPanel",)
 
     def GetToolTip(self) -> str:
-        return "Abrir el panel de control de Tripta Fittings."
+        return "Abrir el panel de control de Tripta Clamps 3D."
 
     def GetMenuText(self) -> str:
         return "Abrir panel"
@@ -111,13 +111,13 @@ class _TriptaOpenPanelCmd:
 # ── Registration ───────────────────────────────────────────────────
 
 def register_commands() -> None:
-    """Register ``TriptaCreatePiece`` and ``TriptaOpenPanel`` in FreeCADGui.
+    """Register ``TriptaClamps3DCreatePiece`` and ``TriptaClamps3DOpenPanel`` in FreeCADGui.
 
     This function is safe to call multiple times — duplicate registrations
     are silently ignored by FreeCAD.
 
     Must be called after ``FreeCADGui`` is available (e.g. from
-    ``TriptaFittingsWorkbench.Initialize`` or ``InitGui.Initialize``).
+    ``TriptaClamps3DWorkbench.Initialize`` or ``InitGui.Initialize``).
     Wrapped in ``try/except`` so headless ``freecadcmd`` never breaks.
     """
     try:
@@ -126,11 +126,11 @@ def register_commands() -> None:
         return  # headless — nothing to do
 
     try:
-        FreeCADGui.addCommand("TriptaCreatePiece", _TriptaCreatePieceCmd())
+        FreeCADGui.addCommand("TriptaClamps3DCreatePiece", _TriptaClamps3DCreatePieceCmd())
     except Exception:
         pass
 
     try:
-        FreeCADGui.addCommand("TriptaOpenPanel", _TriptaOpenPanelCmd())
+        FreeCADGui.addCommand("TriptaClamps3DOpenPanel", _TriptaClamps3DOpenPanelCmd())
     except Exception:
         pass

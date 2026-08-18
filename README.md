@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/media/hero.png" alt="Tripta Fittings — piezas tri-clamp" width="820">
+  <img src="docs/media/hero.png" alt="Tripta Clamps 3D — piezas tri-clamp" width="820">
 </p>
 
-# Tripta Fittings — Workbench para FreeCAD
+# Tripta Clamps 3D — Workbench para FreeCAD
 
 Workbench de FreeCAD para modelar **piezas tri-clamp** — ferulas, gaskets, spools y end caps — con dimensiones según **ASME BPE**. Elegís el tamaño, ajustás los parámetros y FreeCAD te genera el sólido, listo para recomputar y exportar.
 
@@ -30,8 +30,8 @@ Los renders se generan con material metálico (modo *Shaded*, sin aristas de con
 - **4 piezas paramétricas** — férula, gasket, spool y endcap, sólidos de revolución válidos.
 - **10 presets ASME BPE** — desde ½″ Mini hasta 4″ TC119, con dimensiones de férula, tubo y gasket certificadas.
 - **Paramétrico en vivo** — cambia una dimensión y el sólido se reconstruye por recompute (`Ctrl+Shift+R`).
-- **Panel de control acoplable** — `TriptaOpenPanel` abre un dock `QDockWidget` nativo (View → Panels).
-- **Comando de creación** — `TriptaCreatePiece` genera la pieza directamente en la escena.
+- **Panel de control acoplable** — `TriptaClamps3DOpenPanel` abre un dock `QDockWidget` nativo (View → Panels).
+- **Comando de creación** — `TriptaClamps3DCreatePiece` genera la pieza directamente en la escena.
 - **Constraint checking** — valida y acota dimensiones incompatibles con los límites ASME BPE.
 - **Núcleo sin dependencia de FreeCAD** — la suite corre con pytest puro; FreeCAD solo se toca en la capa adaptadora.
 - **Headless friendly** — imports GUI protegidos a nivel de módulo; se testea con `freecadcmd`.
@@ -44,7 +44,7 @@ Los renders se generan con material metálico (modo *Shaded*, sin aristas de con
 
 1. Abre FreeCAD → *Tools → Addon Manager* → *Configure → Add to a custom repository* con la URL del repo, o instala desde el repositorio.
 2. Reinicia FreeCAD.
-3. Selecciona el workbench **Tripta Fittings** en el selector de workbenches.
+3. Selecciona el workbench **Tripta Clamps 3D** en el selector de workbenches.
 
 ### Modo 2 — Manual (Linux / Flatpak)
 
@@ -52,43 +52,43 @@ Los renders se generan con material metálico (modo *Shaded*, sin aristas de con
 MODDIR="$HOME/.var/app/org.freecad.FreeCAD/data/FreeCAD/v1-1/Mod"
 mkdir -p "$MODDIR"
 # symlink para desarrollo en vivo (recomendado)
-ln -s ~/repos/tripta-fittings-freecad "$MODDIR/tripta-fittings"
+ln -s ~/repos/tripta-clamps-3d-freecad "$MODDIR/TriptaClamps3D"
 # o copia completa para uso estable
-# cp -r ~/repos/tripta-fittings-freecad "$MODDIR/tripta-fittings"
+# cp -r ~/repos/tripta-clamps-3d-freecad "$MODDIR/TriptaClamps3D"
 ```
 
 > Ruta del addon real (varía según instalación): confirma con
 > `flatpak run --command=freecadcmd org.freecad.FreeCAD -c "import FreeCAD as A; print(A.ConfigGet('UserAppData'))"`
 
-Reinicia FreeCAD. El workbench aparecerá como **Tripta Fittings**.
+Reinicia FreeCAD. El workbench aparecerá como **Tripta Clamps 3D**.
 
 ---
 
 ## Uso
 
-1. Abre FreeCAD y selecciona el workbench **Tripta Fittings**.
-2. Ejecuta *Tripta Fittings → Open Panel* (`TriptaOpenPanel`) para abrir el panel de control.
+1. Abre FreeCAD y selecciona el workbench **Tripta Clamps 3D**.
+2. Ejecuta *Tripta Clamps 3D → Open Panel* (`TriptaClamps3DOpenPanel`) para abrir el panel de control.
 3. En el panel: elige **tipo de pieza** (férula / gasket / spool / endcap) y un **preset ASME BPE** (p. ej. `1.5″ · TC64`) o ajusta parámetros manualmente.
-4. Pulsa **Create** (o usa *Tripta Fittings → Create Piece*, `TriptaCreatePiece`) para generar el sólido.
+4. Pulsa **Create** (o usa *Tripta Clamps 3D → Create Piece*, `TriptaClamps3DCreatePiece`) para generar el sólido.
 5. Modifica cualquier dimensión en la vista de propiedades y pulsa **Recompute** para actualizar el modelo.
 
 ---
 
 ## Manual de referencia — núcleo puro
 
-El paquete `tripta_fittings` está divido en una capa **pura** (testeable sin FreeCAD) y una **adaptadora**:
+El paquete `tripta_clamps_3d` está divido en una capa **pura** (testeable sin FreeCAD) y una **adaptadora**:
 
 ```text
-tripta_fittings/
+tripta_clamps_3d/
 ├── profile_cmds.py     # Puro: MoveTo/LineTo/Arc + perfiles de férula/gasket/spool/endcap
 ├── constraints.py      # Puro: validate_and_clamp_dimensions
 ├── presets.py          # Puro: 10 presets ASME BPE + lookups por nombre/índice
 ├── geometry.py         # Adaptador: ProfileCmd → Line|ArcSegment (conversión de arcos)
 ├── builder.py          # Adaptador: wire→face→revolve 360° eje Y → Part.Solid
-├── feature.py          # Adaptador: TriptaFittingsFeature (Part::FeaturePython) + ViewProvider
-├── commands.py         # Adaptador: TriptaCreatePiece, TriptaOpenPanel, register_commands()
+├── feature.py          # Adaptador: TriptaClamps3DFeature (Part::FeaturePython) + ViewProvider
+├── commands.py         # Adaptador: TriptaClamps3DCreatePiece, TriptaClamps3DOpenPanel, register_commands()
 ├── panel.py            # Adaptador: panel QDockWidget + preset_to_props_map() (pura)
-└── workbench.py        # Adaptador: TriptaFittingsWorkbench
+└── workbench.py        # Adaptador: TriptaClamps3DWorkbench
 ```
 
 ### Pipeline de generación
@@ -114,7 +114,7 @@ python -m pytest tests/ -v
 
 ```bash
 flatpak run --env=PYTHONPATH=$PWD --command=freecadcmd org.freecad.FreeCAD \
-  -c "import tripta_fittings; print('IMPORT_OK')"
+  -c "import tripta_clamps_3d; print('IMPORT_OK')"
 ```
 
 Genera los 4 sólidos válidos (volumen > 0, `Shape.isValid`, bbox no degenerado):

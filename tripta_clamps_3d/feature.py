@@ -1,4 +1,4 @@
-"""TriptaFittingsFeature — Part::FeaturePython paramétrico para tri-clamp.
+"""TriptaClamps3DFeature — Part::FeaturePython paramétrico para tri-clamp.
 
 Se registra en FreeCAD como ``Part::FeaturePython`` con propiedades
 editables en la Task Panel / Property View.  ``execute()`` reconstruye
@@ -7,14 +7,14 @@ el sólido de revolución cada vez que cambia una dimensión.
 
 from __future__ import annotations
 
-from tripta_fittings.builder import build_solid
+from tripta_clamps_3d.builder import build_solid
 
 
-class TriptaFittingsFeature:
+class TriptaClamps3DFeature:
     """Proxy Python para Part::FeaturePython con piezas tri-clamp."""
 
     def __init__(self, fp):
-        self.Type = "TriptaFittingsFeature"
+        self.Type = "TriptaClamps3DFeature"
         fp.Proxy = self
 
         # ── Propiedades ──────────────────────────────────────
@@ -23,19 +23,19 @@ class TriptaFittingsFeature:
         fp.addProperty(
             "App::PropertyEnumeration",
             "PieceType",
-            "TriptaFittings",
+            "TriptaClamps3D",
             "Tipo de pieza",
         ).PieceType = ["ferrula", "gasket", "spool", "endcap"]
 
-        fp.addProperty("App::PropertyFloat", "TubeID", "TriptaFittings", "Diámetro interno del tubo")
-        fp.addProperty("App::PropertyFloat", "TubeOD", "TriptaFittings", "Diámetro externo del tubo")
-        fp.addProperty("App::PropertyFloat", "FerruleOD", "TriptaFittings", "Diámetro externo del ferrule")
-        fp.addProperty("App::PropertyFloat", "BeadDistance", "TriptaFittings", "Distancia entre beads")
-        fp.addProperty("App::PropertyFloat", "BeadRadius", "TriptaFittings", "Radio del bead")
-        fp.addProperty("App::PropertyFloat", "SpoolLength", "TriptaFittings", "Longitud del spool")
-        fp.addProperty("App::PropertyFloat", "TubeHeight", "TriptaFittings", "Altura del tubo")
-        fp.addProperty("App::PropertyFloat", "FerrHeight", "TriptaFittings", "Altura del ferrule")
-        fp.addProperty("App::PropertyFloat", "GasketThickness", "TriptaFittings", "Espesor del gasket")
+        fp.addProperty("App::PropertyFloat", "TubeID", "TriptaClamps3D", "Diámetro interno del tubo")
+        fp.addProperty("App::PropertyFloat", "TubeOD", "TriptaClamps3D", "Diámetro externo del tubo")
+        fp.addProperty("App::PropertyFloat", "FerruleOD", "TriptaClamps3D", "Diámetro externo del ferrule")
+        fp.addProperty("App::PropertyFloat", "BeadDistance", "TriptaClamps3D", "Distancia entre beads")
+        fp.addProperty("App::PropertyFloat", "BeadRadius", "TriptaClamps3D", "Radio del bead")
+        fp.addProperty("App::PropertyFloat", "SpoolLength", "TriptaClamps3D", "Longitud del spool")
+        fp.addProperty("App::PropertyFloat", "TubeHeight", "TriptaClamps3D", "Altura del tubo")
+        fp.addProperty("App::PropertyFloat", "FerrHeight", "TriptaClamps3D", "Altura del ferrule")
+        fp.addProperty("App::PropertyFloat", "GasketThickness", "TriptaClamps3D", "Espesor del gasket")
 
     def execute(self, fp):
         """Construye el sólido de revolución y lo asigna a fp.Shape."""
@@ -60,7 +60,7 @@ class TriptaFittingsFeature:
             self.Type = state
 
 
-class TriptaFittingsViewProvider:
+class TriptaClamps3DViewProvider:
     """ViewProvider mínimo — funcional sin GUI (freecadcmd)."""
 
     def __init__(self, vobj):

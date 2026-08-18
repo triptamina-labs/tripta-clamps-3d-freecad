@@ -6,9 +6,9 @@ el módulo pueda importarse sin FreeCAD (tests puros, linters, etc.).
 
 from __future__ import annotations
 
-from tripta_fittings.constraints import BEAD_RADIUS_DEFAULT, validate_and_clamp_dimensions
-from tripta_fittings.geometry import ArcSegment, Line, profile_to_segments
-from tripta_fittings.profile_cmds import obtener_perfil
+from tripta_clamps_3d.constraints import BEAD_RADIUS_DEFAULT, validate_and_clamp_dimensions
+from tripta_clamps_3d.geometry import ArcSegment, Line, profile_to_segments
+from tripta_clamps_3d.profile_cmds import obtener_perfil
 
 
 def build_solid(tipo: str, params_dict: dict):  # -> Part.Solid at runtime

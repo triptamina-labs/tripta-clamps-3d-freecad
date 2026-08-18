@@ -9,7 +9,7 @@ Dependencias:
   - FreeCAD (Flatpak: org.freecad.FreeCAD)
   - Xvfb
   - Python PIL (para el recorte transparente)
-  - El repo clonado con `tripta_fittings` importable (vía PYTHONPATH)
+  - El repo clonado con `tripta_clamps_3d` importable (vía PYTHONPATH)
 
 Uso:
   ./scripts/render_media.py
@@ -42,8 +42,8 @@ import sys, os, time
 sys.path.insert(0, {REPO!r})
 import FreeCAD as App
 import FreeCADGui as Gui
-from tripta_fittings.feature import TriptaFittingsFeature, TriptaFittingsViewProvider
-from tripta_fittings.presets import preset_por_nombre
+from tripta_clamps_3d.feature import TriptaClamps3DFeature, TriptaClamps3DViewProvider
+from tripta_clamps_3d.presets import preset_por_nombre
 {_PROPS_BLOCK}
 OUT = {MEDIA!r}
 TIPOS_CONF = [
@@ -54,9 +54,9 @@ for docname, items in TIPOS_CONF:
     doc = App.newDocument(docname)
     for tipo, px in items:
         obj = doc.addObject("Part::FeaturePython", f"TF_{{tipo}}")
-        TriptaFittingsFeature(obj)
+        TriptaClamps3DFeature(obj)
         if obj.ViewObject is not None:
-            TriptaFittingsViewProvider(obj.ViewObject)
+            TriptaClamps3DViewProvider(obj.ViewObject)
             try:
                 obj.ViewObject.ShapeColor = (0.55, 0.57, 0.60, 1.0)
                 obj.ViewObject.DiffuseColor = [(0.55, 0.57, 0.60, 1.0)]

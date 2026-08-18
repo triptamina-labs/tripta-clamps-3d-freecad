@@ -1,7 +1,7 @@
-"""Tripta Fittings — hook de inicialización GUI del addon FreeCAD.
+"""Tripta Clamps 3D — hook de inicialización GUI del addon FreeCAD.
 
 Este módulo se ejecuta solo cuando FreeCAD arranca en modo gráfico.
-Registra el workbench ``TriptaFittingsWorkbench`` en FreeCADGui.
+Registra el workbench ``TriptaClamps3DWorkbench`` en FreeCADGui.
 
 Los imports de FreeCAD/FreeCADGui/PySide están protegidos dentro de
 bloques try/except para no romper el arranque si falta alguna dependencia.
@@ -26,21 +26,21 @@ def Initialize():
         return
 
     try:
-        from tripta_fittings.workbench import TriptaFittingsWorkbench
-        FreeCADGui.addWorkbench(TriptaFittingsWorkbench)
+        from tripta_clamps_3d.workbench import TriptaClamps3DWorkbench
+        FreeCADGui.addWorkbench(TriptaClamps3DWorkbench)
     except Exception as exc:
-        print(f"[Tripta Fittings] Error al registrar workbench: {exc}")
+        print(f"[Tripta Clamps 3D] Error al registrar workbench: {exc}")
 
-    # Registrar comandos en FreeCADGui (TriptaCreatePiece, TriptaOpenPanel)
+    # Registrar comandos en FreeCADGui (TriptaClamps3DCreatePiece, TriptaClamps3DOpenPanel)
     try:
-        from tripta_fittings.commands import register_commands
+        from tripta_clamps_3d.commands import register_commands
         register_commands()
     except Exception:
         pass
 
 
 # Requerido por FreeCAD — lista de comandos que provee este workbench
-Commands = ["TriptaCreatePiece", "TriptaOpenPanel"]
+Commands = ["TriptaClamps3DCreatePiece", "TriptaClamps3DOpenPanel"]
 
 
 def GetClassName():

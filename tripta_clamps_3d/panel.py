@@ -1,4 +1,4 @@
-"""TriptaFittingsPanel — Panel de control acoplable para piezas tri-clamp.
+"""TriptaClamps3DPanel — Panel de control acoplable para piezas tri-clamp.
 
 Diseño: QDockWidget registrado en FreeCADGui.getMainWindow() con
 ``Qt.RightDockWidgetArea``.  Esta es la opción más robusta para FreeCAD
@@ -7,15 +7,15 @@ menú *View > Panels* y sobrevive a minimize/restore.
 
 Cómo se abre el panel
 ---------------------
-El panel se abre mediante el comando ``TriptaOpenPanel`` (register_commands)
-o desde el menú *Tripta Fittings > TriptaOpenPanel* del workbench.
+El panel se abre mediante el comando ``TriptaClamps3DOpenPanel`` (register_commands)
+o desde el menú *Tripta Clamps 3D > TriptaClamps3DOpenPanel* del workbench.
 Internamente crea (o trae al frente) un QDockWidget singleton.
 
 Cómo se añaden los comandos
 ---------------------------
-``register_commands()`` (en commands.py) registra ``TriptaCreatePiece``
-y ``TriptaOpenPanel`` en FreeCADGui.  Se llama desde
-``TriptaFittingsWorkbench.Initialize`` y desde ``InitGui.Initialize``.
+``register_commands()`` (en commands.py) registra ``TriptaClamps3DCreatePiece``
+y ``TriptaClamps3DOpenPanel`` en FreeCADGui.  Se llama desde
+``TriptaClamps3DWorkbench.Initialize`` y desde ``InitGui.Initialize``.
 
 Headless / pytest
 -----------------
@@ -48,7 +48,7 @@ except ImportError:
 # ── Preset → feature property mapping ─────────────────────────────
 
 def preset_to_props_map(preset: Dict[str, Any]) -> Dict[str, float]:
-    """Map an ASME preset dict to TriptaFittingsFeature property names.
+    """Map an ASME preset dict to TriptaClamps3DFeature property names.
 
     The mapping follows the convention specified in the task:
 
@@ -65,13 +65,13 @@ def preset_to_props_map(preset: Dict[str, Any]) -> Dict[str, float]:
     Parameters
     ----------
     preset : dict
-        A preset dictionary from ``tripta_fittings.presets.PRESETS``
+        A preset dictionary from ``tripta_clamps_3d.presets.PRESETS``
         (obtained via ``preset_por_nombre()``).
 
     Returns
     -------
     dict
-        Mapping with TriptaFittingsFeature property names as keys and
+        Mapping with TriptaClamps3DFeature property names as keys and
         float values suitable for direct assignment.
     """
     if preset is None:
@@ -90,7 +90,7 @@ def preset_to_props_map(preset: Dict[str, Any]) -> Dict[str, float]:
 
 
 # ── Field visibility per piece type ───────────────────────────────
-# Keys = TriptaFittings property names; True = visible for that piece type.
+# Keys = TriptaClamps3D property names; True = visible for that piece type.
 _FIELDS_BY_TYPE: Dict[str, Dict[str, bool]] = {
     "ferrula": {
         "TubeID": True,
@@ -172,10 +172,10 @@ _PROP_NAMES: list[str] = [
 ]
 
 
-# ── TriptaFittingsPanel (QDockWidget) ─────────────────────────────
+# ── TriptaClamps3DPanel (QDockWidget) ─────────────────────────────
 
 # Module-level singleton reference so only one dock exists at a time.
-_panel_instance: Optional["TriptaFittingsPanel"] = None
+_panel_instance: Optional["TriptaClamps3DPanel"] = None
 
 
 def _get_main_window() -> Any:
@@ -186,8 +186,8 @@ def _get_main_window() -> Any:
         return None
 
 
-class TriptaFittingsPanel:
-    """Dockable control panel for Tripta Fittings.
+class TriptaClamps3DPanel:
+    """Dockable control panel for Tripta Clamps 3D.
 
     Constructed as a QDockWidget and added to the FreeCAD main window.
     All Qt / FreeCAD imports are done lazily inside the constructor so
@@ -198,12 +198,12 @@ class TriptaFittingsPanel:
         # Lazy Qt imports — only when GUI is present
         if not _has_gui:
             raise RuntimeError(
-                "TriptaFittingsPanel requires FreeCAD GUI (PySide/Qt). "
+                "TriptaClamps3DPanel requires FreeCAD GUI (PySide/Qt). "
                 "Cannot instantiate in headless mode."
             )
 
-        self._dock: Any = _QtWidgets.QDockWidget("Tripta Fittings")
-        self._dock.setObjectName("TriptaFittingsPanel")
+        self._dock: Any = _QtWidgets.QDockWidget("Tripta Clamps 3D")
+        self._dock.setObjectName("TriptaClamps3DPanel")
         self._dock.setAllowedAreas(
             _QtCore.Qt.RightDockWidgetArea | _QtCore.Qt.LeftDockWidgetArea
         )
@@ -240,7 +240,7 @@ class TriptaFittingsPanel:
         self._combo_preset = _QtWidgets.QComboBox()
         self._combo_preset.addItem("Custom", None)
         try:
-            from tripta_fittings.presets import PRESETS
+            from tripta_clamps_3d.presets import PRESETS
             for p in PRESETS:
                 self._combo_preset.addItem(p["preset"], p)
         except ImportError:
@@ -355,7 +355,7 @@ class TriptaFittingsPanel:
                 pass
 
     def _on_create_piece(self) -> None:
-        """Create a new TriptaFittingsFeature (or update existing)."""
+        """Create a new TriptaClamps3DFeature (or update existing)."""
         try:
             import FreeCAD as App
             import FreeCADGui as _Gui
@@ -370,16 +370,16 @@ class TriptaFittingsPanel:
         # Create new object
         doc = App.ActiveDocument
         if doc is None:
-            doc = App.newDocument("TriptaFittings")
+            doc = App.newDocument("TriptaClamps3D")
 
-        from tripta_fittings.feature import (
-            TriptaFittingsFeature,
-            TriptaFittingsViewProvider,
+        from tripta_clamps_3d.feature import (
+            TriptaClamps3DFeature,
+            TriptaClamps3DViewProvider,
         )
 
         obj = doc.addObject("Part::FeaturePython", "TF_Piece")
-        TriptaFittingsFeature(obj)
-        TriptaFittingsViewProvider(obj.ViewObject)
+        TriptaClamps3DFeature(obj)
+        TriptaClamps3DViewProvider(obj.ViewObject)
 
         # Apply current panel values
         props = self._get_panel_props()
@@ -412,7 +412,7 @@ class TriptaFittingsPanel:
     # ── Work object management ─────────────────────────────────────
 
     def _set_work_obj(self, obj: Any) -> None:
-        """Set the active TriptaFittings object and load its props."""
+        """Set the active TriptaClamps3D object and load its props."""
         self._work_obj = obj
         if obj is None:
             return
@@ -489,13 +489,13 @@ class TriptaFittingsPanel:
         return self._dock
 
     def load_object(self, obj: Any) -> None:
-        """Load a TriptaFittings object into the panel.
+        """Load a TriptaClamps3D object into the panel.
 
         Called by the selection observer when the user selects a TF_* object.
         """
         if obj is not None and getattr(obj, "Proxy", None) is not None:
             tp = getattr(obj.Proxy, "Type", None)
-            if tp == "TriptaFittingsFeature":
+            if tp == "TriptaClamps3DFeature":
                 self._set_work_obj(obj)
                 return
         # Not a TF_* — keep the current work object
@@ -506,7 +506,7 @@ class TriptaFittingsPanel:
 class _SelectionObserver:
     """Minimal FreeCAD selection observer to sync the panel."""
 
-    def __init__(self, panel: TriptaFittingsPanel) -> None:
+    def __init__(self, panel: TriptaClamps3DPanel) -> None:
         self._panel = panel
 
     def addSelection(self, doc_name: str, obj_name: str, *args: Any) -> None:
@@ -537,8 +537,8 @@ class _SelectionObserver:
 
 # ── Singleton accessor ─────────────────────────────────────────────
 
-def get_panel() -> Optional[TriptaFittingsPanel]:
-    """Return (and lazily create) the singleton TriptaFittingsPanel.
+def get_panel() -> Optional[TriptaClamps3DPanel]:
+    """Return (and lazily create) the singleton TriptaClamps3DPanel.
 
     Returns ``None`` when the GUI is not available.
     """
@@ -546,14 +546,14 @@ def get_panel() -> Optional[TriptaFittingsPanel]:
     if not _has_gui:
         return None
     if _panel_instance is None:
-        _panel_instance = TriptaFittingsPanel()
+        _panel_instance = TriptaClamps3DPanel()
     return _panel_instance
 
 
 def open_panel() -> None:
     """Create (if needed) and show the dock panel.
 
-    Called by the ``TriptaOpenPanel`` command.
+    Called by the ``TriptaClamps3DOpenPanel`` command.
     """
     panel = get_panel()
     if panel is not None:

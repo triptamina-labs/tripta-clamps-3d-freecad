@@ -1,7 +1,7 @@
-"""Tripta Fittings — hook de inicialización del addon FreeCAD.
+"""Tripta Clamps 3D — hook de inicialización del addon FreeCAD.
 
 Este módulo se ejecuta al iniciar FreeCAD para registrar el workbench
-"Tripta Fittings". No realiza ninguna acción especial durante el import
+"Tripta Clamps 3D". No realiza ninguna acción especial durante el import
 general; el registro real ocurre en InitGui.py (solo en modo gráfico).
 
 Puede importarse sin FreeCAD (para pruebas con pytest) siempre que no

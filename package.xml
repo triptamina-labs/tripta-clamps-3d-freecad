@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="https://github.com/FreeCAD/fcad_addon">
-  <name>tripta-fittings</name>
-  <description>Workbench de FreeCAD para modelar piezas tri-clamp (ferula, gasket, spool, end cap) con dimensiones ASME BPE. La misma geometria que el visor web de TriptaClamps3D, ahora dentro del CAD.</description>
+  <name>Tripta Clamps 3D</name>
+  <description>Workbench de FreeCAD para modelar piezas tri-clamp (ferula, gasket, spool, end cap) con dimensiones ASME BPE. La misma geometria que el visor web de Tripta Clamps 3D, ahora dentro del CAD.</description>
   <version>0.1.0</version>
   <date>2026-08-18</date>
   <maintainer email="felipe@triptalabs.co">Felipe Castellanos Cárdenas</maintainer>
   <license file="LICENSE">MIT</license>
-  <icon>tripta_fittings/icon.png</icon>
-  <url>https://github.com/triptalabs/tripta-fittings-freecad</url>
-  <documentation>https://github.com/triptalabs/tripta-fittings-freecad/blob/main/README.md</documentation>
-  <content type="workbench" url="https://github.com/triptalabs/tripta-fittings-freecad/archive/refs/heads/main.zip">tripta-fittings</content>
+  <icon>tripta_clamps_3d/icon.png</icon>
+  <url>https://github.com/triptamina-labs/tripta-clamps-3d-freecad</url>
+  <documentation>https://github.com/triptamina-labs/tripta-clamps-3d-freecad/blob/main/README.md</documentation>
+  <content type="workbench" url="https://github.com/triptamina-labs/tripta-clamps-3d-freecad/archive/refs/heads/main.zip">TriptaClamps3D</content>
   <depends>
     <freeCAD version="0.21"/>
   </depends>

@@ -21,22 +21,22 @@
 
 - El GUI de FreeCAD se verificó **headless bajo Xvfb** (sesión Hermes) usando `freecadcmd`/`flatpak run` con `QT_QPA_PLATFORM=xcb` y un display virtual, lo que eliminó la dependencia de abrir el GUI en el monitor de Felipe.
 - Los 4 sólidos se renderizan con material metálico (modo Shaded) y se exportan a `docs/media/`.
-- Fix aplicado: `TriptaFittingsViewProvider.getIcon()` tenía una firma incorrecta (`getIcon(self, vobj)`) que FreeCAD llama sin argumento; corregida a `getIcon(self)`.
+- Fix aplicado: `TriptaClamps3DViewProvider.getIcon()` tenía una firma incorrecta (`getIcon(self, vobj)`) que FreeCAD llama sin argumento; corregida a `getIcon(self)`.
 - Limitación conocida: las **sombras proyectadas** (SoShadowGroup / POV-Ray) no están disponibles (pivy sin `SoShadowGroup` en esta versión; sin POV-Ray/LuxRender instalado). El render usa sombreado por iluminación del viewport.
 
 ## Mapa de archivos del plugin
 
 ```text
-tripta_fittings/
+tripta_clamps_3d/
 ├── profile_cmds.py   # núcleo puro: MoveTo/LineTo/Arc + perfil_ferula/gasket/endcap/spool
 ├── constraints.py    # validate_and_clamp_dimensions (pure)
 ├── presets.py        # 10 presets ASME BPE + lookups
 ├── geometry.py       # ProfileCmd → Line|ArcSegment
 ├── builder.py        # build_solid: wire→face→revolve 360° eje Y → Part.Solid
-├── feature.py        # TriptaFittingsFeature (Part::FeaturePython) + ViewProvider
-├── commands.py       # TriptaCreatePiece, TriptaOpenPanel, register_commands()
+├── feature.py        # TriptaClamps3DFeature (Part::FeaturePython) + ViewProvider
+├── commands.py       # TriptaClamps3DCreatePiece, TriptaClamps3DOpenPanel, register_commands()
 ├── panel.py          # panel QDockWidget + preset_to_props_map()
-└── workbench.py      # TriptaFittingsWorkbench
+└── workbench.py      # TriptaClamps3DWorkbench
 Init.py / InitGui.py / package.xml / README.md / LICENSE
 scripts/render_media.py   # regenera renders de docs/media/
 docs/media/              # renders del README

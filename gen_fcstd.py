@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Genera /tmp/tc64_gui.FCStd con las 4 piezas tri-clamp (preset 1.5\" TC64) + placements + render."""
 import sys, os
-sys.path.insert(0, "/home/tripta/repos/tripta-fittings-freecad")
+sys.path.insert(0, "/home/tripta/repos/tripta-clamps-3d-freecad")
 
 import FreeCAD as App
 import Part
-from tripta_fittings.feature import TriptaFittingsFeature, TriptaFittingsViewProvider
-from tripta_fittings.presets import preset_por_nombre
+from tripta_clamps_3d.feature import TriptaClamps3DFeature, TriptaClamps3DViewProvider
+from tripta_clamps_3d.presets import preset_por_nombre
 
 _PRESET = preset_por_nombre('1.5" · TC64')
 _PROPS = {
@@ -22,10 +22,10 @@ POS = ["(-120,80,0)", "(-40,80,0)", "(40,80,0)", "(120,80,0)"]
 doc = App.newDocument("TC64_Verif")
 for tipo, pos in zip(TIPOS, POS):
     obj = doc.addObject("Part::FeaturePython", f"TF_{tipo}")
-    TriptaFittingsFeature(obj)
+    TriptaClamps3DFeature(obj)
     ob = obj.ViewObject
     if ob is not None:
-        TriptaFittingsViewProvider(ob)
+        TriptaClamps3DViewProvider(ob)
     obj.PieceType = tipo
     for prop, val in _PROPS.items():
         setattr(obj, prop, val)
@@ -33,7 +33,7 @@ for tipo, pos in zip(TIPOS, POS):
     doc.recompute()
 doc.recompute()
 
-fpath = "/home/tripta/repos/tripta-fittings-freecad/tc64_gui.FCStd"
+fpath = "/home/tripta/repos/tripta-clamps-3d-freecad/tc64_gui.FCStd"
 doc.saveAs(fpath)
 print("SAVED", fpath)
 # report

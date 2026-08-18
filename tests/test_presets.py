@@ -1,8 +1,8 @@
-"""Tests for tripta_fittings.presets — ASME BPE preset table."""
+"""Tests for tripta_clamps_3d.presets — ASME BPE preset table."""
 
 import pytest
 
-from tripta_fittings.presets import (
+from tripta_clamps_3d.presets import (
     PRESETS,
     normalizar_nombre,
     preset_por_indice,

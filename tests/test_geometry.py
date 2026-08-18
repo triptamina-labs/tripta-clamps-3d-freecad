@@ -10,15 +10,15 @@ from __future__ import annotations
 import math
 import pytest
 
-from tripta_fittings.constraints import BEAD_RADIUS_DEFAULT
-from tripta_fittings.geometry import (
+from tripta_clamps_3d.constraints import BEAD_RADIUS_DEFAULT
+from tripta_clamps_3d.geometry import (
     ArcSegment,
     Line,
     Point,
     profile_to_segments,
 )
-from tripta_fittings.presets import preset_por_nombre
-from tripta_fittings.profile_cmds import Arc, MoveTo, LineTo, obtener_perfil
+from tripta_clamps_3d.presets import preset_por_nombre
+from tripta_clamps_3d.profile_cmds import Arc, MoveTo, LineTo, obtener_perfil
 
 # ── Params del preset 1.5" TC64 ─────────────────────────────
 

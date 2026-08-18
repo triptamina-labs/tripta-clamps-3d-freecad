@@ -1,4 +1,4 @@
-"""triptya_fittings constraints module — constraints de dimensiones puro.
+"""tripta_clamps_3d constraints module — constraints de dimensiones puro.
 
 Port de src/core/constraints.ts y src/core/constants.ts.
 """

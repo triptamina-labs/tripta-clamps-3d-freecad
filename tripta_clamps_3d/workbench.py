@@ -1,6 +1,6 @@
-"""Tripta Fittings — workbench para FreeCAD.
+"""Tripta Clamps 3D — workbench para FreeCAD.
 
-Define la clase ``TriptaFittingsWorkbench`` que FreeCAD registra como
+Define la clase ``TriptaClamps3DWorkbench`` que FreeCAD registra como
 un workbench en el menú de trabajo.
 
 Los imports de FreeCAD, FreeCADGui y PySide/Qt están protegidos dentro
@@ -14,17 +14,17 @@ import os
 from typing import Any
 
 
-class TriptaFittingsWorkbench:
+class TriptaClamps3DWorkbench:
     """Workbench paramétrico para piezas tri-clamp.
 
     Proporciona acceso a comandos de creación y edición de piezas:
-    ``TriptaCreatePiece`` y ``TriptaOpenPanel``.
+    ``TriptaClamps3DCreatePiece`` y ``TriptaClamps3DOpenPanel``.
 
     Los comandos se implementarán en la ola 3 de desarrollo.
     """
 
     # ── Metadatos ────────────────────────────────────────────────────
-    MenuText = "Tripta Fittings"
+    MenuText = "Tripta Clamps 3D"
     ToolTip = (
         "Workbench paramétrico de piezas tri-clamp: "
         "férula, gasket, spool y endcap. "
@@ -33,7 +33,7 @@ class TriptaFittingsWorkbench:
 
     # Icono del workbench.
     # NOTA: Si se desea un icono personalizado, colocar un archivo PNG en
-    # tripta_fittings/icon.png (recomendado 96×96 px) y descomentar la
+    # tripta_clamps_3d/icon.png (recomendado 96×96 px) y descomentar la
     # línea de __icon_path. Por ahora se usa un QIcon vacío o el icono
     # de Part como fallback.
     _icon_path: str = os.path.join(
@@ -53,9 +53,9 @@ class TriptaFittingsWorkbench:
         except ImportError:
             return
 
-        # Registrar comandos en FreeCADGui (TriptaCreatePiece, TriptaOpenPanel)
+        # Registrar comandos en FreeCADGui (TriptaClamps3DCreatePiece, TriptaClamps3DOpenPanel)
         try:
-            from tripta_fittings.commands import register_commands
+            from tripta_clamps_3d.commands import register_commands
             register_commands()
         except ImportError:
             pass  # commands module not yet available; commands still listed
@@ -63,8 +63,8 @@ class TriptaFittingsWorkbench:
         self.appendMenu(
             self.MenuText,
             [
-                "TriptaCreatePiece",
-                "TriptaOpenPanel",
+                "TriptaClamps3DCreatePiece",
+                "TriptaClamps3DOpenPanel",
             ],
         )
 

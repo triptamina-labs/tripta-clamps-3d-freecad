@@ -1,5 +1,5 @@
 """Tests portados de constraints.test.ts y constants.test.ts (T2)."""
-from tripta_fittings.constraints import (
+from tripta_clamps_3d.constraints import (
     CONSTRAINT_EPSILON,
     CONSTRAINT_MIN_GAP,
     BEAD_RADIUS_DEFAULT,
