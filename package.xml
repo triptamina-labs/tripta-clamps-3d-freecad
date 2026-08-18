@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="https://github.com/FreeCAD/fcad_addon">
   <name>tripta-fittings</name>
-  <description>Workbench paramétrico de piezas tri-clamp (férula, gasket, spool, endcap) portado de TriptaClamps3D-Web</description>
+  <description>Workbench de FreeCAD para modelar piezas tri-clamp (ferula, gasket, spool, end cap) con dimensiones ASME BPE. La misma geometria que el visor web de TriptaClamps3D, ahora dentro del CAD.</description>
   <version>0.1.0</version>
   <date>2026-08-18</date>
   <maintainer email="felipe@triptalabs.co">Felipe Castellanos Cárdenas</maintainer>

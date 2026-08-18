@@ -1,12 +1,14 @@
 <p align="center">
-  <img src="docs/media/hero.png" alt="Tripta Fittings — piezas tri-clamp paramétricas" width="820">
+  <img src="docs/media/hero.png" alt="Tripta Fittings — piezas tri-clamp" width="820">
 </p>
 
-# Tripta Fittings — Workbench paramétrico para FreeCAD
+# Tripta Fittings — Workbench para FreeCAD
 
-**Port a FreeCAD del proyecto [TriptaClamps3D-Web](https://github.com/triptalabs/TriptaClamps3D-Web).**
+Workbench de FreeCAD para modelar **piezas tri-clamp** — ferulas, gaskets, spools y end caps — con dimensiones según **ASME BPE**. Elegís el tamaño, ajustás los parámetros y FreeCAD te genera el sólido, listo para recomputar y exportar.
 
-Workbench que genera piezas **tri-clamp** industriales 100 % paramétricas con dimensiones certificadas según la norma **ASME BPE**. El núcleo de cálculo es puro Python (probado sin GUI) y la capa de FreeCAD lo envuelve como `Part::FeaturePython` con solidos de revolución.
+Es la misma geometría que ya hicimos como [visitor 3D en la web](https://github.com/triptamina-labs/TriptaClamps3D-Web): en el navegador la ves girar y la descargás; acá queda adentro de FreeCAD como un workbench, para modelarla con el resto de tu pieza sin salir de la herramienta.
+
+La parte de cálculo (perfiles, dimensiones, presets) es Python puro con tests; la capa de FreeCAD la envuelve como sólidos de revolución paramétricos.
 
 ---
 
